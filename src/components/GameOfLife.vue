@@ -222,24 +222,30 @@ const getCellDynamicClasses = (cell, r, c) => {
     if (liveNeighbors < 2) {
       dynamicClasses["bg-purple-500/50"] = true;
       dynamicClasses["shadow-[0_0_8px_theme(colors.purple.500)]"] = true;
+      dynamicClasses["animate-cellGlowPulse"] = true; // Added animation
     } else if (liveNeighbors > 3) {
       dynamicClasses["bg-teal-500/50"] = true;
       dynamicClasses["shadow-[0_0_8px_theme(colors.teal.500)]"] = true;
+      dynamicClasses["animate-cellGlowPulse"] = true; // Added animation
     } else {
       dynamicClasses["bg-pink-400"] = true;
       dynamicClasses[
-        "shadow-[0_0_8px_theme(colors.pink.400),_0_0_3px_theme(colors.pink.300)]"
-      ] = true;
+        "shadow-[0_0_12px_theme(colors.pink.400),_0_0_5px_theme(colors.pink.300)]"
+      ] = true; // Enhanced glow for stable alive
+      dynamicClasses["animate-cellGlowPulse"] = true; // Added animation
     }
   } else {
     if (liveNeighbors === 3) {
       dynamicClasses["bg-cyan-400"] = true;
       dynamicClasses[
-        "shadow-[0_0_8px_theme(colors.cyan.400),_0_0_3px_theme(colors.cyan.300)]"
-      ] = true;
+        "shadow-[0_0_12px_theme(colors.cyan.400),_0_0_5px_theme(colors.cyan.300)]"
+      ] = true; // Enhanced glow for to-be-born
+      dynamicClasses["animate-cellGlowPulse"] = true; // Added animation
     } else {
       dynamicClasses["bg-gray-800/50"] = true;
       dynamicClasses["hover:bg-gray-700/50"] = true;
+      // Subtle pulse for dead cells if desired, or keep static
+      // dynamicClasses["animate-cellGlowPulse"] = true;
     }
   }
   return dynamicClasses;
@@ -292,7 +298,7 @@ onUnmounted(() => {
     class="p-4 bg-gray-950 min-h-screen flex flex-col justify-center items-center font-['Consolas',_monospace]"
   >
     <div
-      class="grid border-2 border-pink-500/70 shadow-[0_0_25px_theme(colors.pink.600),_0_0_10px_theme(colors.pink.400),_inset_0_0_15px_theme(colors.pink.700/50)] bg-gray-950"
+      class="grid border-2 border-pink-500/70 shadow-[0_0_35px_theme(colors.pink.600),_0_0_15px_theme(colors.pink.400),_inset_0_0_20px_theme(colors.pink.700/50)] bg-gray-950 animate-softPulse"
       :style="{
         'grid-template-columns': `repeat(${gridSize.cols}, minmax(0, 1fr))`,
         width: `${gridSize.cols * 24 + 4}px`,
@@ -302,7 +308,7 @@ onUnmounted(() => {
         <div
           v-for="(cell, colIndex) in row"
           :key="cell.id"
-          class="w-6 h-6 border border-pink-700/25 transition-colors duration-500 ease-in-out shadow-[0_0_2px_theme(colors.pink.700/50)]"
+          class="w-6 h-6 border border-pink-700/25 transition-colors duration-500 ease-in-out shadow-[0_0_4px_theme(colors.pink.700/60)]"
           :class="getCellDynamicClasses(cell, rowIndex, colIndex)"
         ></div>
       </template>
